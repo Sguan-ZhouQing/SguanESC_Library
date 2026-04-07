@@ -14,6 +14,7 @@
 /* USER CODE BEGIN Includes */
 // 电机控制User用户设置声明
 #include "UserData_Function.h"
+#include "UserData_Status.h"
 #include "UserData_UserControl.h"
 /* USER CODE END Includes */
 
@@ -22,3 +23,18 @@ SguanESC_System_STRUCT Sguan = {0};
 
 
 
+void SguanESC_High_Loop(void){
+
+}
+
+void SguanESC_Low_Loop(void){
+
+}
+
+void SguanESC_Printf_Loop(void){
+
+}
+
+void SguanESC_main_Loop(void){
+    
+}

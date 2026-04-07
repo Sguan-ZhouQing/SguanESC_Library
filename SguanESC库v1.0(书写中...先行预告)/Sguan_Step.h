@@ -1,7 +1,15 @@
-#ifndef __SGUAN_MATH_H
-#define __SGUAN_MATH_H
+#ifndef __SGUAN_STEP_H
+#define __SGUAN_STEP_H
 
+/* 外部函数声明 */
 #include "Sguan_Config.h"
 
+typedef struct{
+    uint8_t Sector;
 
-#endif // SGUAN_MATH_H
+    
+    uint8_t Pace;
+}STEP_STRUCT;
+
+
+#endif // SGUAN_STEP_H
