@@ -1,8 +1,11 @@
 #ifndef __SGUAN_MOTORSTATUS_H
 #define __SGUAN_MOTORSTATUS_H
 
-/* 外部函数声明 */
+/* SguanESC配置文件声明 */
 #include "Sguan_Config.h"
+
+#define MOTOR_STATUS_STANDBY 0x00
+
 
 
 #endif // SGUAN_MOTORSTATUS_H

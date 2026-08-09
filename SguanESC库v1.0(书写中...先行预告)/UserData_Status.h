@@ -2,6 +2,4 @@
 #define __USERDATA_STATUS_H
 
 
-
-
 #endif // USERDATA_STATUS_H
