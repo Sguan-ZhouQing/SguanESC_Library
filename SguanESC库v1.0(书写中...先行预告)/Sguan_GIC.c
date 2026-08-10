@@ -3,7 +3,7 @@
  * @GitHub: https://github.com/Sguan-ZhouQing
  * @Date: 2026-08-09 00:26:30
  * @LastEditors: 星必尘Sguan|3464647102@qq.com
- * @LastEditTime: 2026-08-09 01:25:21
+ * @LastEditTime: 2026-08-10 15:48:22
  * @FilePath: \SguanESC_Debug\Debug_Packeage\Sguan_GIC.c
  * @Description: SguanESC库的“增益分段控制器Gain”
  * 
@@ -33,6 +33,10 @@ static float GIC_SignFunction(GIC_STRUCT *gic){
  */
 void GIC_Init(GIC_STRUCT *gic){
     // 初始化为零
+    gic->run.Ref = 0.0f;
+    gic->run.Fbk = 0.0f;
+    gic->run.Output = 0.0f;
+    gic->run.__Error = 0.0f;
 }
 
 /**
