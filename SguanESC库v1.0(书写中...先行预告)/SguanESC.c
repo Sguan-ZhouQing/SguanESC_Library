@@ -3,7 +3,7 @@
  * @GitHub: https://github.com/Sguan-ZhouQing
  * @Date: 2026-08-09 00:26:48
  * @LastEditors: 星必尘Sguan|3464647102@qq.com
- * @LastEditTime: 2026-08-10 17:06:12
+ * @LastEditTime: 2026-08-10 17:14:25
  * @FilePath: \SguanESC_Debug\Debug_Packeage\SguanESC.c
  * @Description: SguanESC库的“核心代码实现”
  * 
@@ -40,7 +40,13 @@ static void Function_SetTXdata(uint8_t ch,float data);
 
 
 
-SguanESC_System_STRUCT Sguan;
+SguanESC_System_STRUCT Sguan = {
+    .Func_Start = Function_Start,
+    .Func_Stop = Function_Stop,
+    .Func_Set_Ubus = Function_SetUbus,
+    .Func_Set_Velocity = Function_SetVelocity,
+    .Func_Set_TXdata = Function_SetTXdata
+};
 
 
 
@@ -70,24 +76,67 @@ static void Function_SetTXdata(uint8_t ch,float data){
 
 
 
-
-
-
-
+/**
+ * @description: SguanFOC核心文件，定时中断服务函数(高频率电机载波)
+ * @reminder: 10Khz或者更高定时中断中调用，任务优先级“最高”
+ * @return {*}
+ */
 void SguanESC_High_Loop(void){
 
 }
 
+/**
+ * @description: SguanFOC核心文件，定时中断服务函数(1ms周期数据更新)
+ * @reminder: 1Khz或者更低定时中断中调用，任务优先级“中”
+ * @return {*}
+ */
 void SguanESC_Low_Loop(void){
-
+    // 执行电机状态机切换函数和任务
+    Sguan_Calculate_Low_Loop(&Sguan);
 }
 
+/**
+ * @description: SguanFOC核心文件，UART或者CAN接收完成中断服务函数
+ * @reminder: 主循环函数调用，任务优先级“低”
+ * @param {uint8_t} *data 接收到的数据
+ * @param {uint16_t} length 数据长度
+ * @return {*}
+ */
 void SguanESC_Printf_Loop(uint8_t *data, uint16_t length){
-
+    // 微控制器接收来自上位机的消息
+    // 解析数据的格式like：AO=16.8?
+    Printf_RX_Loop(data,length);
 }
 
+/**
+ * @description: SguanESC核心文件，主循环服务函数(主循环TXdata数据更新)
+ * @reminder: 主循环函数调用，任务优先级“最低”
+ * @return {*}
+ */
 void SguanESC_main_Loop(void){
+    // 1.上电即初始化的函数
+    // (包含printf的收发初始化和Initial_Init)
+    static uint8_t count = 0;
+    if (!count){
+        Printf_TX_Init(&Sguan.txdata);
+        Printf_RX_Init();
+        User_Initial_Init();
+        count = !count;
+    }
 
+    // 2.接收到开启电机才初始化
+    // (即电机状态机为Sguan.status==1)
+    Sguan_Calculate_main_Loop(&Sguan);
+
+    // 3.正常运行时串口打印数据，或Cogging数据打印
+    if ((Sguan.status >= MOTOR_STATUS_IDLE) && 
+        (Sguan.status < MOTOR_STATUS_ENCODER_ERROR)){
+        #if CONFIG_Printf==0
+        Printf_Normal_Loop(&Sguan);
+        #elif CONFIG_Printf==2
+        Printf_Cogging_Loop();
+        #endif // CONFIG_Printf
+    }
 }
 
 
