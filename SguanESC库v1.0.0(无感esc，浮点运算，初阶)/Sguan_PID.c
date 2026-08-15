@@ -91,11 +91,3 @@ void PID_Loop(PID_STRUCT *pid){
     pid->run.__i[1] = pid->run.__i[0];
 }
 
-void PID_Current_Switch(PID_STRUCT *pid){
-
-}
-
-void PID_Speed_Switch(PID_STRUCT *pid){
-
-}
-

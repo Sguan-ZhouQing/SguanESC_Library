@@ -1,5 +1,0 @@
-#ifndef __USERDATA_PARAMETER_H
-#define __USERDATA_PARAMETER_H
-
-
-#endif // USERDATA_PARAMETER_H

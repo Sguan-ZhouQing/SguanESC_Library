@@ -18,10 +18,10 @@ typedef struct{
     float __D_den;            // (中间量)微分传递函数分母系数
 
     uint8_t __IntegralFrozen_flag; // (中间量)积分抗饱和
-}PID_RUN_STRUCT;
+}__PID_RUN_STRUCT;
 
 typedef struct{
-    PID_RUN_STRUCT run;     // (结构体)PID运算结构体
+    __PID_RUN_STRUCT run;     // (结构体)PID运算结构体
 
     float T;                // (系统时钟)T离散周期
 

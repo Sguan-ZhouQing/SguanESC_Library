@@ -2,7 +2,9 @@
 #define __USERDATA_FUNCTION_H
 #include <stdint.h>
 /* 电机控制User用户设置·功能接口 */
+/* 用户自己的CODE BEGIN Includes */
 
+/* 用户自己的CODE END Includes */
 
 /**
  * @description: 1.电机上电即初始化的函数接口
@@ -99,7 +101,7 @@ static inline int32_t User_ReadADC_Raw(int32_t Current_CH){
  * @reminder: (此方函数->填写你自己的驱动器PWM占空比)
  * @return {*}
  */
-static inline void User_PwmDuty_SetU(uint8_t Duty_CH,
+static inline void User_PwmDuty_Set(uint8_t Duty_CH,
                                 uint32_t Duty_uvw){
     /* Your code for Motor PWM_CH0~2 duty set */
 
@@ -169,7 +171,7 @@ static inline void User_PWM_SWitch(uint8_t Duty_CH,
 }
 
 /**
- * @description: 10.用户的驱动器母线电压读取接口
+ * @description: 7.用户的驱动器母线电压读取接口
  * @reminder: (此方函数->填写驱动器母线电压滤波后的数值)
  * @return {*}
  */
@@ -178,6 +180,19 @@ static inline float User_VBUS_DataGet(void){
     /* Your code for motor VBUS_Voltage Data return if you use it */
     
     // 如果不使用电压功能，返回0xFF800000（正常数值不会是负无穷）
+    return 0xFF800000;
+}
+
+/**
+ * @description: 8.用户的驱动器母线电流读取接口
+ * @reminder: (此方函数->填写驱动器母线电流滤波后的数值)
+ * @return {*}
+ */
+static inline float User_VBUS_DataGet(void){
+    // float CURRENT_num = 0.0f;
+    /* Your code for motor VBUS_Voltage Data return if you use it */
+    
+    // 如果不使用电流功能，返回0xFF800000（正常数值不会是负无穷）
     return 0xFF800000;
 }
 
