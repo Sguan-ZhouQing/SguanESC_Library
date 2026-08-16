@@ -241,7 +241,7 @@ static void Sguan_Calculate_High_Loop(SguanESC_System_STRUCT *sguan){
     sguan->encoder.__Real_We = sguan->encoder.__Real_Speed*sguan->motor.Poles;
 
     // 4.LPF动态截止频率计算
-    float abs_Speed = Value_fabsf(sguan->encoder.__Real_Speed);
+    float abs_Speed = Value_fabsf(sguan->encoder.__Real_We);
     float RC_Phase = fast_atan(abs_Speed/sguan->motor.RC_Wc);
     if (sguan->esc.Target_Phase >= (RC_Phase + sguan->motor.Phase_Limit)){
         sguan->encoder.__LPF_Wc = abs_Speed/fast_tan(sguan->esc.Target_Phase - RC_Phase);
