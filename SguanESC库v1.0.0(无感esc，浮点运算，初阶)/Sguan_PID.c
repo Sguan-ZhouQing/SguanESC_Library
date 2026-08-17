@@ -4,7 +4,7 @@
  * @Date: 2026-01-26 22:38:09
  * @LastEditors: 星必尘Sguan|3464647102@qq.com
  * @LastEditTime: 2026-08-10 15:45:47
- * @FilePath: \SguanESC_Debug\Debug_Packeage\Sguan_PID.c
+ * @FilePath: \SguanESC_Library\Sguan_PID.c
  * @Description: SguanESC库的“闭环PID算法”实现
  * 
  * Copyright (c) 2026 by $星必尘Sguan, All Rights Reserved. 

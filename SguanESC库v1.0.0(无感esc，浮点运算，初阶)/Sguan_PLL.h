@@ -9,9 +9,6 @@ typedef struct{
     float OutWe;            // (输出数据)OutWe电角速度输出
     float OutRe;            // (输出数据)OutRe电角度输出
 
-    float __Kp;             // (数据)Kp比例项增益
-    float __Ki;             // (数据)Ki积分项增益
-
     float __We_i;           // (数据)数据历史输入值
     float __Re_i;           // (数据)数据历史输入值
     float __X_num[2];       // (中间量)PI传递函数分子系数

@@ -4,7 +4,7 @@
  * @Date: 2026-08-09 00:27:55
  * @LastEditors: 星必尘Sguan|3464647102@qq.com
  * @LastEditTime: 2026-08-10 17:09:05
- * @FilePath: \SguanESC_Debug\Debug_Packeage\Sguan_math.c
+ * @FilePath: \SguanESC_Library\Sguan_math.c
  * @Description: SguanESC库的“数学算法库”
  * 
  * Copyright (c) 2026 by $星必尘Sguan, All Rights Reserved. 
@@ -43,29 +43,6 @@ float Value_sqrtf(float x){
 void Value_Limit(float *val, float max, float min){
     if (*val > max) *val = max;
     if (*val < min) *val = min;
-}
-
-// 参数取模[0, 2π)
-float Value_normalize(float angle){
-    while (1){
-        if (angle > Value_2PI)
-            angle -= Value_2PI;
-        else if (angle < 0)
-            angle += Value_2PI;
-        else
-            break;
-    }
-    return angle;
-}
-
-// 数值角度越位处理函数
-void Value_Correct(float *angle, float error){
-    if (error >= Value_PI){
-        *angle -= Value_2PI;
-    }
-    if (error <= -Value_PI){
-        *angle += Value_2PI;
-    }
 }
 
 // 数值限定set函数
@@ -230,10 +207,10 @@ float fast_atan(float x){
       return x;
     }
     if (x < 0.0f){
-      return -my_atanf(-x);
+      return -fast_atan(-x);
     }
     if (x > 1.0f){
-      return (float)((float)Value_PI_2 - (float)my_atanf(1.0f / x));
+      return (float)((float)Value_PI_2 - (float)fast_atan(1.0f / x));
     }
 
     // 查表 + 线性插值

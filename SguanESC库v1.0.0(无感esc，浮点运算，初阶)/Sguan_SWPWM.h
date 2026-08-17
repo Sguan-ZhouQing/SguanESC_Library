@@ -3,6 +3,7 @@
 
 /* SguanESC配置文件声明 */
 #include "Sguan_Config.h"
+#include <stdint.h>
 
 void SWPWM(int8_t *sector, 
         uint32_t Duty,
@@ -10,7 +11,8 @@ void SWPWM(int8_t *sector,
         float Umid, 
         float Ua, 
         float Ub, 
-        float Uc);
+        float Uc, 
+        float abs_Speed);
 
 
 #endif // SGUAN_SWPWM_H

@@ -33,10 +33,6 @@ typedef struct{
     float __LPF_Wc;                           // (截止频率)LPF_Uabc动态Wc
     float LPF_Max;                          // (限幅)LPF_Uabc的Wc上限限幅
     float LPF_Min;                          // (限幅)LPF_Uabc的Wc下限限幅
-
-    float PLL_K;                            // (增益)PLL随机械角速度变化Wc的倍率
-    float PLL_Max;                          // (限幅)PLL的Wc上限限幅
-    float PLL_Min;                          // (限幅)PLL的Wc下线限幅
 }__MOTOR_ENCODER_STRUCT;
 
 typedef struct{
@@ -108,7 +104,9 @@ typedef struct{
     __MOTOR_ESC_STRUCT esc;                 // 【数据】电调控制量设计
     __MOTOR_QUANTIZE_STRUCT motor;          // 【有参数设计】电机本体参数
     __MOTOR_SAFE_STRUCT safe;               // 【有参数设计】电机保护参数
+    #if CONFIG_MODE
     PID_STRUCT pid;                         // 【有参数设计】速度环闭环控制
+    #endif // CONFIG_MODE
     PLL_STRUCT pll;                         // 【有参数设计】锁相环预估速度
     PRINTF_STRUCT txdata;                   // 【数据】串口调试数据
 

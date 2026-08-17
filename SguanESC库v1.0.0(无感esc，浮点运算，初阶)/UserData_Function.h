@@ -3,6 +3,13 @@
 #include <stdint.h>
 /* 电机控制User用户设置·功能接口 */
 /* 用户自己的CODE BEGIN Includes */
+// Your code belike:
+// #include "main.h"
+// #include "tim.h"
+// #include "usart.h"
+// #include "adc.h"
+// #include "Timer.h"
+// #include "Sguan_printf.h"
 
 /* 用户自己的CODE END Includes */
 
@@ -17,6 +24,9 @@ static inline void User_Initial_Init(void){
 
     // User profile is like:
     // // 初始化定时器中断
+    // __HAL_TIM_SET_COMPARE(&htim1,TIM_CHANNEL_1,2124);
+    // __HAL_TIM_SET_COMPARE(&htim1,TIM_CHANNEL_2,2124);
+    // __HAL_TIM_SET_COMPARE(&htim1,TIM_CHANNEL_3,2124);
     // HAL_TIM_Base_Start_IT(&htim1);
     // HAL_TIM_Base_Start_IT(&htim2);
     // // 启用串口DMA接收
@@ -41,17 +51,17 @@ static inline void User_StartMotor_Init(void){
 }
 
 /**
- * @description: 3.用户系统的Delay函数对接
- * @reminder: (此方函数->填入你自己单片机的延时函数)
- * @reminder: (用于某些初始化场景的时机等待)
- * @param {unsigned int} ms
+ * @description: 3.电机失能函数
+ * @reminder: (此方函数->填入电机停机失能的代码)
+ * @reminder: (比如关闭使能驱动、关闭PWM输出)
  * @return {*}
  */
-static inline void User_Delay(uint32_t ms){
-    /* Your code for Delay_ms here */
+static inline void User_StopMotor_DeInit(void){
+    /* Your code for initing TIM and gate driver and encoder and ADC here */
 
     // User profile is like:
-    // HAL_Delay(ms);
+    // 关闭PWM输出
+    // 关闭栅极驱动使能
 }
 
 /**
@@ -68,27 +78,23 @@ static inline int32_t User_ReadADC_Raw(int32_t Current_CH){
     switch (Current_CH){
     case 0:
         /* Your code for Motor Umid raw */
-
         // User profile is like:
         // ADC_num = (int32_t)ADC_InjectedValues[0];
         break;
     case 1:
         /* Your code for Motor Ua raw */
-
-        // User profile is like:
-        // ADC_num = (int32_t)ADC_InjectedValues[1];
-        break;
-    case 2:
-        /* Your code for Motor Ub raw */
-
         // User profile is like:
         // ADC_num = (int32_t)ADC_InjectedValues[2];
         break;
+    case 2:
+        /* Your code for Motor Ub raw */
+        // User profile is like:
+        // ADC_num = (int32_t)ADC_InjectedValues[1];
+        break;
     case 3:
         /* Your code for Motor Uc raw */
-
         // User profile is like:
-        // ADC_num = (int32_t)ADC_InjectedValues[3];
+        // ADC_num = (int32_t)ADC_InjectedValues[0];
         break;
     default:
         break;
@@ -104,7 +110,6 @@ static inline int32_t User_ReadADC_Raw(int32_t Current_CH){
 static inline void User_PwmDuty_Set(uint8_t Duty_CH,
                                 uint32_t Duty_uvw){
     /* Your code for Motor PWM_CH0~2 duty set */
-
     switch (Duty_CH){
     case 0:
         // User profile is like:
@@ -154,7 +159,7 @@ static inline void User_PWM_SWitch(uint8_t Duty_CH,
             // HAL_GPIO_WritePin(SD2_GPIO_Port,SD2_Pin,GPIO_PIN_RESET);
         }
         break;
-    case 3:
+    case 2:
         if (Enable){
             // User profile is like:
             // HAL_GPIO_WritePin(SD3_GPIO_Port,SD3_Pin,GPIO_PIN_SET);
@@ -188,16 +193,16 @@ static inline float User_VBUS_DataGet(void){
  * @reminder: (此方函数->填写驱动器母线电流滤波后的数值)
  * @return {*}
  */
-static inline float User_VBUS_DataGet(void){
+static inline float User_CURRENT_DataGet(void){
     // float CURRENT_num = 0.0f;
-    /* Your code for motor VBUS_Voltage Data return if you use it */
+    /* Your code for motor CURRENT Data return if you use it */
     
     // 如果不使用电流功能，返回0xFF800000（正常数值不会是负无穷）
     return 0xFF800000;
 }
 
 /**
- * @description: 11.用户的驱动器温度读取接口
+ * @description: 9.用户的驱动器温度读取接口
  * @reminder: (此方函数->填写驱动器温度滤波后的数值)
  * @return {*}
  */
@@ -210,7 +215,7 @@ static inline float User_Temperature_DataGet(void){
 }
 
 /**
- * @description: 8.用户的通信接口设计
+ * @description: 10.用户的通信接口设计
  * @reminder: (此方函数->填写串口或者CAN的对应接口函数)
  * @param {unsigned char} *ch
  * @param {unsigned short int} size

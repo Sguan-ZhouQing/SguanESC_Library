@@ -4,7 +4,7 @@
  * @Date: 2026-08-09 00:28:19
  * @LastEditors: 星必尘Sguan|3464647102@qq.com
  * @LastEditTime: 2026-08-11 10:10:35
- * @FilePath: \SguanESC_Debug\Debug_Packeage\Sguan_LPF.c
+ * @FilePath: \SguanESC_Library\Sguan_LPF.c
  * @Description: SguanESC库的“LPF一阶低通滤波器实现”
  * 
  * Copyright (c) 2026 by $星必尘Sguan, All Rights Reserved. 

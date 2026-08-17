@@ -4,7 +4,7 @@
  * @Date: 2026-08-09 00:35:59
  * @LastEditors: 星必尘Sguan|3464647102@qq.com
  * @LastEditTime: 2026-08-11 01:00:07
- * @FilePath: \SguanESC_Debug\Debug_Packeage\Sguan_SWPWM.c
+ * @FilePath: \SguanESC_Library\Sguan_SWPWM.c
  * @Description: SguanESC库的“六步换相的PWM调制策略实现”
  * 
  * Copyright (c) 2026 by $星必尘Sguan, All Rights Reserved. 
@@ -23,7 +23,7 @@
 
 /**
  * @description: 六步换相PWM切换调制
- * @param {uint8_t} *sector 电机换相扇区
+ * @param {int8_t} *sector 电机换相扇区
  * @param {uint32_t} Duty   满占空比
  * @param {int8_t} D_ubus_in控制端电压信号
  * @param {float} Umid      中性点电压
@@ -38,71 +38,72 @@ void SWPWM(int8_t *sector,
         float Umid, 
         float Ua, 
         float Ub, 
-        float Uc){
+        float Uc, 
+        float abs_Speed){
     switch (*sector){
     case 0:
         // AB通电->C悬空
         if ((Uc >= Umid) && (D_ubus_in >= 0.0f)){
-            *sector++;
+            (*sector)++;
             break;
         }
-        else if((Uc <= Umid) && (D_ubus_in < 0.0f)){
-            *sector--;
+        if((Uc <= Umid) && (D_ubus_in < 0.0f)){
+            (*sector)--;
             break;
         }
         break;
     case 1:
         // AC通电->B悬空
         if ((Ub <= Umid) && (D_ubus_in >= 0.0f)){
-            *sector++;
+            (*sector)++;
             break;
         }
-        else if((Ub >= Umid) && (D_ubus_in < 0.0f)){
-            *sector--;
+        if((Ub >= Umid) && (D_ubus_in < 0.0f)){
+            (*sector)--;
             break;
         }
         break;
     case 2:
         // BC通电->A悬空
         if ((Ua >= Umid) && (D_ubus_in >= 0.0f)){
-            *sector++;
+            (*sector)++;
             break;
         }
-        else if((Ua <= Umid) && (D_ubus_in < 0.0f)){
-            *sector--;
+        if((Ua <= Umid) && (D_ubus_in < 0.0f)){
+            (*sector)--;
             break;
         }
         break;
     case 3:
         // BA通电->C悬空
         if ((Uc <= Umid) && (D_ubus_in >= 0.0f)){
-            *sector++;
+            (*sector)++;
             break;
         }
-        else if((Uc >= Umid) && (D_ubus_in < 0.0f)){
-            *sector--;
+        if((Uc >= Umid) && (D_ubus_in < 0.0f)){
+            (*sector)--;
             break;
         }
         break;
     case 4:
         // CA通电->B悬空
         if ((Ub >= Umid) && (D_ubus_in >= 0.0f)){
-            *sector++;
+            (*sector)++;
             break;
         }
-        else if((Ub <= Umid) && (D_ubus_in < 0.0f)){
-            *sector--;
+        if((Ub <= Umid) && (D_ubus_in < 0.0f)){
+            (*sector)--;
             break;
         }
         break;
     case 5:
         // CB通电->A悬空
         if ((Ua <= Umid) && (D_ubus_in >= 0.0f)){
-            *sector++;
+            (*sector)++;
             break;
         }
-        else if((Ua >= Umid) && (D_ubus_in < 0.0f)){
-            *sector--;
+        if((Ua >= Umid) && (D_ubus_in < 0.0f)){
+            (*sector)--;
             break;
         }
         break;
@@ -111,20 +112,35 @@ void SWPWM(int8_t *sector,
         break;
     }
 
-	// *sector限幅
-    if (*sector <= -1){
-        *sector = 5;
+    float abs_ubus = Value_fabsf(D_ubus_in);
+    if ((abs_Speed <= (float)CONFIG_We) && (abs_ubus >= (float)CONFIG_UBUS)){
+        static uint32_t num = 0;
+        num++;
+        if (num >= (uint32_t)(CONFIG_WAIT/BLDC_RUN_T)){   // 50us中断中，每250ms刷新一下角度位置
+            if (D_ubus_in >= 0.0f){
+                (*sector)++;
+            }
+            else{
+                (*sector)--;
+            }
+            num = 0;
+        }
     }
-	else if(*sector >= 6){
-		*sector = 0;
+    
+
+	// *sector限幅
+    if ((*sector) <= -1){
+        (*sector) = 5;
+    }
+	else if((*sector) >= 6){
+		(*sector) = 0;
 	}
 
-    float abs_ubus = Value_fabsf(D_ubus_in);
 	switch (*sector){
 	case 0:
         // AB通电
-        User_PwmDuty_Set(MOTOR_CH_a, (uint16_t)Duty*(0.5f + abs_ubus*0.5f));
-        User_PwmDuty_Set(MOTOR_CH_b, (uint16_t)Duty*(0.5f - abs_ubus*0.5f));
+        User_PwmDuty_Set(MOTOR_CH_a, (uint16_t)(Duty*(0.5f + abs_ubus*0.5f)));
+        User_PwmDuty_Set(MOTOR_CH_b, (uint16_t)(Duty*(0.5f - abs_ubus*0.5f)));
         User_PWM_SWitch(MOTOR_CH_a, MOTOR_ENABLE);
         User_PWM_SWitch(MOTOR_CH_b, MOTOR_ENABLE);
         // C悬空
@@ -132,8 +148,8 @@ void SWPWM(int8_t *sector,
 		break;
 	case 1:
         // AC通电
-        User_PwmDuty_Set(MOTOR_CH_a, (uint16_t)Duty*(0.5f + abs_ubus*0.5f));
-        User_PwmDuty_Set(MOTOR_CH_c, (uint16_t)Duty*(0.5f - abs_ubus*0.5f));
+        User_PwmDuty_Set(MOTOR_CH_a, (uint16_t)(Duty*(0.5f + abs_ubus*0.5f)));
+        User_PwmDuty_Set(MOTOR_CH_c, (uint16_t)(Duty*(0.5f - abs_ubus*0.5f)));
         User_PWM_SWitch(MOTOR_CH_a, MOTOR_ENABLE);
         User_PWM_SWitch(MOTOR_CH_c, MOTOR_ENABLE);
         // B悬空
@@ -141,8 +157,8 @@ void SWPWM(int8_t *sector,
 		break;
 	case 2:
         // BC通电
-        User_PwmDuty_Set(MOTOR_CH_b, (uint16_t)Duty*(0.5f + abs_ubus*0.5f));
-        User_PwmDuty_Set(MOTOR_CH_c, (uint16_t)Duty*(0.5f - abs_ubus*0.5f));
+        User_PwmDuty_Set(MOTOR_CH_b, (uint16_t)(Duty*(0.5f + abs_ubus*0.5f)));
+        User_PwmDuty_Set(MOTOR_CH_c, (uint16_t)(Duty*(0.5f - abs_ubus*0.5f)));
         User_PWM_SWitch(MOTOR_CH_b, MOTOR_ENABLE);
         User_PWM_SWitch(MOTOR_CH_c, MOTOR_ENABLE);
         // A悬空
@@ -150,8 +166,8 @@ void SWPWM(int8_t *sector,
 		break;
 	case 3:
         // BA通电
-        User_PwmDuty_Set(MOTOR_CH_b, (uint16_t)Duty*(0.5f + abs_ubus*0.5f));
-        User_PwmDuty_Set(MOTOR_CH_a, (uint16_t)Duty*(0.5f - abs_ubus*0.5f));
+        User_PwmDuty_Set(MOTOR_CH_b, (uint16_t)(Duty*(0.5f + abs_ubus*0.5f)));
+        User_PwmDuty_Set(MOTOR_CH_a, (uint16_t)(Duty*(0.5f - abs_ubus*0.5f)));
         User_PWM_SWitch(MOTOR_CH_b, MOTOR_ENABLE);
         User_PWM_SWitch(MOTOR_CH_a, MOTOR_ENABLE);
         // C悬空
@@ -159,8 +175,8 @@ void SWPWM(int8_t *sector,
 		break;
 	case 4:
         // CA通电
-        User_PwmDuty_Set(MOTOR_CH_c, (uint16_t)Duty*(0.5f + abs_ubus*0.5f));
-        User_PwmDuty_Set(MOTOR_CH_a, (uint16_t)Duty*(0.5f - abs_ubus*0.5f));
+        User_PwmDuty_Set(MOTOR_CH_c, (uint16_t)(Duty*(0.5f + abs_ubus*0.5f)));
+        User_PwmDuty_Set(MOTOR_CH_a, (uint16_t)(Duty*(0.5f - abs_ubus*0.5f)));
         User_PWM_SWitch(MOTOR_CH_c, MOTOR_ENABLE);
         User_PWM_SWitch(MOTOR_CH_a, MOTOR_ENABLE);
         // B悬空
@@ -168,8 +184,8 @@ void SWPWM(int8_t *sector,
 		break;
 	case 5:
         // CB通电
-        User_PwmDuty_Set(MOTOR_CH_c, (uint16_t)Duty*(0.5f + abs_ubus*0.5f));
-        User_PwmDuty_Set(MOTOR_CH_b, (uint16_t)Duty*(0.5f - abs_ubus*0.5f));
+        User_PwmDuty_Set(MOTOR_CH_c, (uint16_t)(Duty*(0.5f + abs_ubus*0.5f)));
+        User_PwmDuty_Set(MOTOR_CH_b, (uint16_t)(Duty*(0.5f - abs_ubus*0.5f)));
         User_PWM_SWitch(MOTOR_CH_c, MOTOR_ENABLE);
         User_PWM_SWitch(MOTOR_CH_b, MOTOR_ENABLE);
         // A悬空

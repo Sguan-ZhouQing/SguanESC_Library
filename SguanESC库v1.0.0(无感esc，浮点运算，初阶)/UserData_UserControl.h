@@ -11,7 +11,15 @@
 static inline void User_UserTX(void){
     // 传入串口printf要发送的数据，如txdata.fdata[0]，最多默认16个数值
     // 如需传入更多数值，请修改Sguan_printf中的参数
-
+    // Sguan.txdata.fdata[0] = Sguan.pll.go.OutRe;
+    // Sguan.txdata.fdata[1] = Sguan.pll.go.OutWe;
+    // Sguan.txdata.fdata[2] = Sguan.pll.go.Error;
+    // Sguan.txdata.fdata[3] = Sguan.esc.__sector;
+    // Sguan.txdata.fdata[4] = Sguan.esc.__Umid;
+    // Sguan.txdata.fdata[5] = Sguan.esc.__Ua;
+    // Sguan.txdata.fdata[6] = Sguan.esc.__Ub;
+    // Sguan.txdata.fdata[7] = Sguan.esc.__Uc;
+    // Sguan.txdata.fdata[8] = Sguan.encoder.__LPF_Wc;
 }
 
 /**
