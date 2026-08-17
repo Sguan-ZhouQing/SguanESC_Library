@@ -4,8 +4,8 @@
  * @Date: 2026-01-26 22:50:37
  * @LastEditors: 星必尘Sguan|3464647102@qq.com
  * @LastEditTime: 2026-06-05 03:49:39
- * @FilePath: \SguanFOC_Debug\SguanFOC\Sguan_PLL.c
- * @Description: SguanFOC库的“开环PLL锁相环”实现
+ * @FilePath: \SguanESC_Debug\Debug_Packeage\Sguan_PLL.c
+ * @Description: SguanESC库的“开环PLL锁相环”实现
  * 
  * Copyright (c) 2026 by $星必尘Sguan, All Rights Reserved. 
  */
