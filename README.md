@@ -1,5 +1,5 @@
 # SguanESC - 轻量BLDC无感电调控制库
-![Version](https://img.shields.io/badge/Version-1.0-blue)
+![Version](https://img.shields.io/badge/Version-1.0.0-blue)
 ![License](https://img.shields.io/badge/License-MIT-green)
 ![Language](https://img.shields.io/badge/C-00599C)
 ![Platform](https://img.shields.io/badge/ARM_/_MCU-支持-orange)
@@ -19,7 +19,7 @@
 ## 现有文件
 - `SguanESC.c/h`：核心入口
 - `Sguan_MotorStatus.c/h`：电机状态机
-- `Sguan_Step.c/h`：六步换相
+- `Sguan_SWPWM.c/h`：六步换相
 - `Sguan_math.c/h`：数学运算
 - `UserData_*`：用户配置与硬件接口
 
