@@ -15,7 +15,7 @@ static inline void User_Parameter_Init(SguanESC_System_STRUCT *user){
     // |              （默认数值，动态变化的不记）                  |
     // +---------------------------------------------------------+
     // 1.低通滤波器LPF相关
-    user->lpf.LPF_Sign.Wc = 3000.0f;                // 输入信号速率限幅
+    user->lpf.LPF_Sign.Wc = 1.8f;                   // 输入信号速率限幅
 
     // 2.无感速度解算相关
     user->encoder.LPF_Max = 1e10f;                  // LPF截止频率动态Wc变化上限限幅
@@ -23,18 +23,20 @@ static inline void User_Parameter_Init(SguanESC_System_STRUCT *user){
 
     // 2.速度环PID参数
     #if CONFIG_MODE
+    // (下面参数仅适用于4006航模电机，如果其他电机，PID需要重新调整)
+    // (如果其他电机...使用MODE_Voltag_OPEN，参数可以不调就能用)
     user->pid.Wc = 100.0f;                          // 速度环speed的PID->微分滤波
     user->pid.Kp = 0.18f;                           // 速度环speed的PID->Kp
     user->pid.Ki = 1.5f;                            // 速度环speed的PID->Ki
     user->pid.Kd = 0.0f;                            // 速度环speed的PID->Kd
-    user->pid.OutMax = 20.2f;                       // 速度环speed的PID->最大限幅
-    user->pid.OutMin = -20.2f;                      // 速度环speed的PID->最小限幅
-    user->pid.IntMax = 15000.0f;                    // 速度环speed的PID->积分项上限
-    user->pid.IntMin = -15000.0f;                   // 速度环speed的PID->积分项下限
+    user->pid.OutMax = 10.2f;                       // 速度环speed的PID->最大限幅
+    user->pid.OutMin = -10.2f;                      // 速度环speed的PID->最小限幅
+    user->pid.IntMax = 10.2f;                    // 速度环speed的PID->积分项上限
+    user->pid.IntMin = -10.2f;                   // 速度环speed的PID->积分项下限
     #endif // CONFIG_MODE
 
     // 3.锁相环自然频率设计
-    user->pll.Wc = 3.14f;                           // 锁相环截止频率设计
+    user->pll.Wc = 6.28f;                           // 锁相环截止频率设计
 }
 
 static inline void User_RealTime_Parameter_Loop(SguanESC_System_STRUCT *user){

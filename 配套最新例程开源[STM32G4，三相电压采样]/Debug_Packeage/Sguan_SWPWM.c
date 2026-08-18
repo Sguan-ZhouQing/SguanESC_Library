@@ -126,7 +126,6 @@ void SWPWM(int8_t *sector,
             num = 0;
         }
     }
-    
 
 	// *sector限幅
     if ((*sector) <= -1){

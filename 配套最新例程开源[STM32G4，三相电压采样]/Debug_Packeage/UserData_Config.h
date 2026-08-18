@@ -10,13 +10,13 @@
 #define Define_Run_Mode 0
 
 /**
- * @description: 宏定义数值决定“电机的静止时启动卡死的重置时间”(默认0.1s刷新一次)
+ * @description: 宏定义数值决定“电机的静止时启动卡死的重置时间”(默认0.3s刷新一次)
  * @reminder: （如果电机有电压，但是电机静止...电机存在通电锁轴的嫌疑）
  * @reminder: （此时电机换相__sector会朝目标方向手动换相，以打破平衡）
  * @reminder: （数值不宜过小，会干扰电机从负速度跨越零速到正速度...或从正跨越零速到负）
  * @return {*}
  */
-#define Define_Run_WaitingTime 0.1f
+#define Define_Run_WaitingTime 0.3f
 
 /**
  * @description: 宏定义数值决定“上一个WaitingTime的判断条件”(默认We小于1.0f,Ubus大于0.02f)

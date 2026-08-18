@@ -14,10 +14,8 @@
 #include "SguanESC.h"
 #include <math.h>
 
-
 extern UART_HandleTypeDef huart1;
 volatile uint32_t ADC_InjectedValues[4] = {0};
-
 
 /**
  * @description: TIM中断回调函数，1ms和100us的定时器定时中断;
@@ -41,9 +39,9 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
  */
 void HAL_ADCEx_InjectedConvCpltCallback(ADC_HandleTypeDef *hadc){		
 	ADC_InjectedValues[0] = ADC2->JDR1;           	// C
-	ADC_InjectedValues[1] = ADC2->JDR2;           	// B
-	ADC_InjectedValues[2] = ADC2->JDR3;          	// A
- 	ADC_InjectedValues[3] = ADC2->JDR4;				// 母线
+	ADC_InjectedValues[1] = ADC2->JDR2;         	  // B
+	ADC_InjectedValues[2] = ADC2->JDR3;          	  // A
+ 	ADC_InjectedValues[3] = ADC2->JDR4;				      // 母线
 }
 
 /**
