@@ -4,7 +4,7 @@
  * @Date: 2026-08-09 00:26:48
  * @LastEditors: 星必尘Sguan|3464647102@qq.com
  * @LastEditTime: 2026-08-10 17:14:25
- * @FilePath: \SguanESC_Library\SguanESC.c
+ * @FilePath: \SguanESC_Debug\Debug_Packeage\SguanESC.c
  * @Description: SguanESC库的“核心代码实现”
  * 
  * Copyright (c) 2026 by $星必尘Sguan, All Rights Reserved. 
@@ -532,6 +532,10 @@ static void Sguan_Calculate_High_Loop(SguanESC_System_STRUCT *sguan){
     
         // 5.闭环控制算法实现
         #if CONFIG_MODE
+        if (sguan->esc.__Speed_in == 0.0f){
+            sguan->encoder.__Real_Speed = 0.0f;
+        }
+
         Transfer_PID_Loop(&sguan->pid, 
             sguan->esc.__Speed_in, 
             sguan->encoder.__Real_Speed);
@@ -584,7 +588,7 @@ static void Sguan_Calculate_main_Loop(SguanESC_System_STRUCT *sguan){
 
 
 /**
- * @description: SguanFOC核心文件，定时中断服务函数(高频率电机载波)
+ * @description: SguanESC核心文件，定时中断服务函数(高频率电机载波)
  * @reminder: 10Khz或者更高定时中断中调用，任务优先级“最高”
  * @return {*}
  */
@@ -593,7 +597,7 @@ void SguanESC_High_Loop(void){
 }
 
 /**
- * @description: SguanFOC核心文件，定时中断服务函数(1ms周期数据更新)
+ * @description: SguanESC核心文件，定时中断服务函数(1ms周期数据更新)
  * @reminder: 1Khz或者更低定时中断中调用，任务优先级“中”
  * @return {*}
  */
@@ -603,7 +607,7 @@ void SguanESC_Low_Loop(void){
 }
 
 /**
- * @description: SguanFOC核心文件，UART或者CAN接收完成中断服务函数
+ * @description: SguanESC核心文件，UART或者CAN接收完成中断服务函数
  * @reminder: 主循环函数调用，任务优先级“低”
  * @param {uint8_t} *data 接收到的数据
  * @param {uint16_t} length 数据长度

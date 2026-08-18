@@ -4,7 +4,7 @@
  * @Date: 2026-08-09 00:35:59
  * @LastEditors: 星必尘Sguan|3464647102@qq.com
  * @LastEditTime: 2026-08-11 01:00:07
- * @FilePath: \SguanESC_Library\Sguan_SWPWM.c
+ * @FilePath: \SguanESC_Debug\Debug_Packeage\Sguan_SWPWM.c
  * @Description: SguanESC库的“六步换相的PWM调制策略实现”
  * 
  * Copyright (c) 2026 by $星必尘Sguan, All Rights Reserved. 
@@ -126,7 +126,6 @@ void SWPWM(int8_t *sector,
             num = 0;
         }
     }
-    
 
 	// *sector限幅
     if ((*sector) <= -1){
