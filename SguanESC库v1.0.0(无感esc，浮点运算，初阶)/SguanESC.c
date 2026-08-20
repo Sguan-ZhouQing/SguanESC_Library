@@ -46,7 +46,7 @@ SguanESC_System_STRUCT Sguan = {
     .Func_Set_TXdata = Function_SetTXdata
 };
 
-// ============================= SguanFOC版本代码(仅声明) ============================
+// ============================= SguanESC版本代码(仅声明) ============================
 /**
  * @description: 2.Transfer传递函数的离散化运算，采用双线性变换
  * @param {LPF_STRUCT} *lpf (滤波)LPF二阶巴特沃斯低通滤波
@@ -532,10 +532,6 @@ static void Sguan_Calculate_High_Loop(SguanESC_System_STRUCT *sguan){
     
         // 5.闭环控制算法实现
         #if CONFIG_MODE
-        if (sguan->esc.__Speed_in == 0.0f){
-            sguan->encoder.__Real_Speed = 0.0f;
-        }
-
         Transfer_PID_Loop(&sguan->pid, 
             sguan->esc.__Speed_in, 
             sguan->encoder.__Real_Speed);
